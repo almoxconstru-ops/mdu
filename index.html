@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CONTROLES DE SERVIÇOS MDU - V3</title>
+    <title>CONTROLES DE SERVIÇOS MDU - V4</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -70,12 +70,10 @@
         .theme-gray .sidebar { background-color: #18181b; color: #ffffff; border-right: 1px solid #52525b; }
         .theme-gray .input-field { background-color: #3f3f46; border-color: #71717a; color: #f4f4f5; }
 
-        /* Animação suave para subida de valores */
         .value-animated {
             font-variant-numeric: tabular-nums;
         }
 
-        /* Animação criativa para todos os botões e abas */
         button, .tab-btn {
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
             position: relative;
@@ -102,8 +100,8 @@
                     <i class="fa-solid fa-cubes-stacked"></i>
                 </div>
                 <div>
-                    <h1 class="text-sm font-black tracking-wider leading-none">MDU SERVIÇOS</h1>
-                    <span class="text-[10px] uppercase opacity-70 tracking-widest font-semibold">Painel Customizado V3</span>
+                    <h1 class="text-sm font-black tracking-wider leading-none">JRMOURA MDU</h1>
+                    <span class="text-[10px] uppercase opacity-70 tracking-widest font-semibold">Painel Customizado</span>
                 </div>
             </div>
 
@@ -126,9 +124,6 @@
                 </button>
             </nav>
         </div>
-        <div class="p-4 text-[11px] opacity-60 border-t border-white/10 text-center font-medium tracking-wide">
-            CONTROLES DE SERVIÇOS MDU v3
-        </div>
     </aside>
 
     <!-- CONTEÚDO PRINCIPAL -->
@@ -140,8 +135,15 @@
                 <h2 id="page-title" class="text-lg font-bold tracking-tight text-main">Dashboard Consolidados</h2>
             </div>
             
-            <!-- SELETOR DE TEMAS -->
             <div class="flex items-center gap-4">
+                <!-- BOTÃO DE LIMPEZA / NOVO MÊS -->
+                <button onclick="abrirModalLimpeza()" class="px-4 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-2 bg-rose-100 text-rose-700 hover:bg-rose-200 border border-rose-200 shadow-xs">
+                    <i class="fa-solid fa-rotate-left"></i> Iniciar Novo Mês / Limpeza
+                </button>
+
+                <div class="h-6 w-px bg-slate-200 dark:bg-slate-700"></div>
+
+                <!-- SELETOR DE TEMAS -->
                 <div class="bg-slate-100 dark:bg-slate-800/50 p-1 rounded-xl flex items-center gap-1 border border-slate-200/60 dark:border-slate-700/50">
                     <button onclick="setTheme('light')" id="theme-btn-light" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1 bg-white text-slate-800 shadow-xs">
                         <i class="fa-solid fa-sun text-amber-500"></i> Claro
@@ -153,11 +155,6 @@
                         <i class="fa-solid fa-moon text-indigo-400"></i> Escuro
                     </button>
                 </div>
-                <div class="h-8 w-px bg-slate-200 dark:bg-slate-700"></div>
-                <div class="flex items-center gap-2">
-                    <span class="text-xs font-semibold text-muted"><i class="fa-regular fa-clock mr-1"></i> Ativo</span>
-                    <div class="h-8 w-8 rounded-full bg-indigo-600 text-white font-bold flex items-center justify-center text-xs shadow-sm">MDU</div>
-                </div>
             </div>
         </header>
 
@@ -168,12 +165,17 @@
             <section id="tab-dashboard" class="space-y-6">
                 <div class="bg-card border p-4 rounded-2xl shadow-xs flex flex-wrap items-center justify-between gap-4">
                     <div>
-                        <h3 class="font-bold text-main">Filtrar Visão do Dashboard</h3>
-                        <p class="text-xs text-muted">Escolha um grupo customizado para focar os gráficos e indicadores.</p>
+                        <h3 class="font-bold text-main">Filtros de Visão do Dashboard</h3>
+                        <p class="text-xs text-muted">Ajuste os indicadores por mês ou por equipe.</p>
                     </div>
-                    <select id="dash-filtro-grupo" onchange="calcularDashboard(false)" class="input-field px-4 py-2 border rounded-xl text-sm font-medium focus:outline-none min-w-[200px] bg-transparent">
-                        <option value="Todos">Todos os Grupos</option>
-                    </select>
+                    <div class="flex gap-3">
+                        <select id="dash-filtro-mes" onchange="calcularDashboard(false)" class="input-field px-4 py-2 border rounded-xl text-sm font-medium focus:outline-none min-w-[150px] bg-transparent">
+                            <option value="Todos">Todos os Meses</option>
+                        </select>
+                        <select id="dash-filtro-grupo" onchange="calcularDashboard(false)" class="input-field px-4 py-2 border rounded-xl text-sm font-medium focus:outline-none min-w-[150px] bg-transparent">
+                            <option value="Todos">Todas as Equipes</option>
+                        </select>
+                    </div>
                 </div>
 
                 <!-- CARDS KPIs COM VALORES ANIMADOS -->
@@ -204,7 +206,7 @@
                 <!-- GRÁFICO -->
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <div class="bg-card p-5 rounded-2xl border shadow-xs lg:col-span-2">
-                        <h4 class="font-bold text-main text-sm mb-4"><i class="fa-solid fa-chart-simple text-indigo-500 mr-1"></i> Gráfico de Production por Grupo Customizado</h4>
+                        <h4 class="font-bold text-main text-sm mb-4"><i class="fa-solid fa-chart-simple text-indigo-500 mr-1"></i> Gráfico de Production</h4>
                         <div class="h-64 relative">
                             <canvas id="chartDashboard"></canvas>
                         </div>
@@ -212,11 +214,11 @@
                     <div class="bg-card p-5 rounded-2xl border shadow-xs flex flex-col justify-between">
                         <div>
                             <h4 class="font-bold text-main text-sm mb-1"><i class="fa-solid fa-print text-rose-500 mr-1"></i> Central de Relatórios</h4>
-                            <p class="text-xs text-muted mb-4">Gere exportações limpas de dados consolidados em Excel ou PDF.</p>
+                            <p class="text-xs text-muted mb-4">Exporte os dados completos do Excel (que agora contém a aba de Despesas) ou gere um PDF.</p>
                         </div>
                         <div class="space-y-2.5">
                             <button onclick="exportarExcelCompleto()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 px-4 rounded-xl shadow-xs transition-all flex items-center justify-center gap-2 cursor-pointer text-sm">
-                                <i class="fa-solid fa-file-excel"></i> Exportar para Excel
+                                <i class="fa-solid fa-file-excel"></i> Exportar Tudo para Excel
                             </button>
                             <button onclick="abrirModalPDF()" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-semibold py-3 px-4 rounded-xl shadow-xs transition-all flex items-center justify-center gap-2 cursor-pointer text-sm">
                                 <i class="fa-solid fa-file-pdf"></i> Imprimir PDF Filtrado
@@ -229,42 +231,35 @@
             <!-- ================= TELA 2: GRUPOS & TÉCNICOS ================= -->
             <section id="tab-cadastros" class="hidden space-y-6">
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    
-                    <!-- COLUNA 1: CADASTRO E EDIÇÃO DE GRUPOS CUSTOMIZADOS -->
+                    <!-- Cadastro Grupos -->
                     <div class="bg-card p-5 rounded-2xl border shadow-xs space-y-4">
-                        <h3 class="text-sm font-bold text-main"><i class="fa-solid fa-folder-plus text-indigo-500 mr-2"></i> 1. Identificação / Grupos</h3>
+                        <h3 class="text-sm font-bold text-main"><i class="fa-solid fa-folder-plus text-indigo-500 mr-2"></i> 1. Grupos</h3>
                         <form id="form-grupo" onsubmit="salvarGrupo(event)" class="space-y-3">
                             <input type="hidden" id="grp-id">
                             <div>
                                 <label class="text-[11px] font-bold text-muted uppercase tracking-wide">Nome Próprio do Grupo</label>
-                                <input type="text" id="grp-nome" required class="input-field w-full mt-1 px-4 py-2 border rounded-xl text-sm focus:outline-none" placeholder="Ex: Equipe Alpha Fibra">
+                                <input type="text" id="grp-nome" required class="input-field w-full mt-1 px-4 py-2 border rounded-xl text-sm focus:outline-none">
                             </div>
                             <div class="flex gap-2">
-                                <button type="submit" id="btn-submit-grupo" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-xl text-xs transition-all shadow-xs cursor-pointer">
-                                    Salvar Grupo
-                                </button>
-                                <button type="button" id="btn-cancelar-grupo" onclick="limparFormGrupo()" class="hidden bg-slate-200 text-slate-700 font-semibold py-2 px-4 rounded-xl text-xs transition-all cursor-pointer">
-                                    Cancelar
-                                </button>
+                                <button type="submit" id="btn-submit-grupo" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-xl text-xs transition-all shadow-xs cursor-pointer">Salvar</button>
+                                <button type="button" id="btn-cancelar-grupo" onclick="limparFormGrupo()" class="hidden bg-slate-200 text-slate-700 font-semibold py-2 px-4 rounded-xl text-xs transition-all cursor-pointer">Cancelar</button>
                             </div>
                         </form>
                         <div class="pt-2 border-t border-slate-100 dark:border-slate-700">
                             <h4 class="text-xs font-bold text-muted uppercase tracking-wider mb-2">Grupos Ativos</h4>
                             <div class="max-h-48 overflow-y-auto custom-scrollbar">
-                                <table class="w-full text-left text-xs">
-                                    <tbody id="tbl-grupos" class="divide-y divide-slate-100 dark:divide-slate-700/50"></tbody>
-                                </table>
+                                <table class="w-full text-left text-xs"><tbody id="tbl-grupos" class="divide-y divide-slate-100 dark:divide-slate-700/50"></tbody></table>
                             </div>
                         </div>
                     </div>
 
-                    <!-- COLUNA 2: CADASTRO DE TÉCNICOS (COM OPÇÃO DE LÍDER) -->
+                    <!-- Cadastro Técnicos -->
                     <div class="bg-card p-5 rounded-2xl border shadow-xs space-y-4">
-                        <h3 class="text-sm font-bold text-main"><i class="fa-solid fa-user-gear text-indigo-500 mr-2"></i> 2. Cadastro de Técnicos</h3>
+                        <h3 class="text-sm font-bold text-main"><i class="fa-solid fa-user-gear text-indigo-500 mr-2"></i> 2. Técnicos</h3>
                         <form id="form-tecnico" onsubmit="cadastrarTecnico(event)" class="space-y-3">
                             <div>
                                 <label class="text-[11px] font-bold text-muted uppercase tracking-wide">Nome do Profissional</label>
-                                <input type="text" id="tech-nome" required class="input-field w-full mt-1 px-4 py-2 border rounded-xl text-sm focus:outline-none" placeholder="Ex: Rodrigo Mendonça">
+                                <input type="text" id="tech-nome" required class="input-field w-full mt-1 px-4 py-2 border rounded-xl text-sm focus:outline-none">
                             </div>
                             <div>
                                 <label class="text-[11px] font-bold text-muted uppercase tracking-wide">Vincular ao Grupo</label>
@@ -272,48 +267,39 @@
                             </div>
                             <div class="flex items-center gap-2 py-1">
                                 <input type="checkbox" id="tech-lider" class="w-4 h-4 text-indigo-600 border-slate-300 rounded focus:ring-indigo-500 bg-transparent cursor-pointer">
-                                <label for="tech-lider" class="text-[11px] font-bold text-muted uppercase tracking-wide cursor-pointer select-none">Definir como Técnico Líder</label>
+                                <label for="tech-lider" class="text-[11px] font-bold text-muted uppercase tracking-wide cursor-pointer select-none">Técnico Líder</label>
                             </div>
-                            <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-xl text-xs transition-all shadow-xs cursor-pointer">
-                                Adicionar Técnico
-                            </button>
+                            <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-xl text-xs transition-all shadow-xs cursor-pointer">Adicionar</button>
                         </form>
                         <div class="pt-2 border-t border-slate-100 dark:border-slate-700">
                             <h4 class="text-xs font-bold text-muted uppercase tracking-wider mb-2">Técnicos Integrados</h4>
                             <div class="max-h-48 overflow-y-auto custom-scrollbar">
-                                <table class="w-full text-left text-xs">
-                                    <tbody id="tbl-tecnicos" class="divide-y divide-slate-100 dark:divide-slate-700/50"></tbody>
-                                </table>
+                                <table class="w-full text-left text-xs"><tbody id="tbl-tecnicos" class="divide-y divide-slate-100 dark:divide-slate-700/50"></tbody></table>
                             </div>
                         </div>
                     </div>
 
-                    <!-- COLUNA 3: CADASTRO DE SERVIÇOS (SEM GASTO FIXO OU MÃO DE OBRA) -->
+                    <!-- Cadastro Serviços -->
                     <div class="bg-card p-5 rounded-2xl border shadow-xs space-y-4">
-                        <h3 class="text-sm font-bold text-main"><i class="fa-solid fa-sliders text-indigo-500 mr-2"></i> 3. Serviços & Valores</h3>
+                        <h3 class="text-sm font-bold text-main"><i class="fa-solid fa-sliders text-indigo-500 mr-2"></i> 3. Serviços</h3>
                         <form id="form-servico" onsubmit="cadastrarServico(event)" class="space-y-3">
                             <div>
                                 <label class="text-[11px] font-bold text-muted uppercase tracking-wide">Nome do Serviço</label>
-                                <input type="text" id="srv-nome" required class="input-field w-full mt-1 px-4 py-2 border rounded-xl text-sm focus:outline-none" placeholder="Ex: Fusão de Fibra Backbone">
+                                <input type="text" id="srv-nome" required class="input-field w-full mt-1 px-4 py-2 border rounded-xl text-sm focus:outline-none">
                             </div>
                             <div>
                                 <label class="text-[11px] font-bold text-muted uppercase tracking-wide">Valor do Serviço (R$)</label>
-                                <input type="number" step="0.01" id="srv-valor" required class="input-field w-full mt-1 px-4 py-2 border rounded-xl text-sm focus:outline-none" placeholder="0.00">
+                                <input type="number" step="0.01" id="srv-valor" required class="input-field w-full mt-1 px-4 py-2 border rounded-xl text-sm focus:outline-none">
                             </div>
-                            <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-xl text-xs transition-all shadow-xs cursor-pointer">
-                                Cadastrar Serviço
-                            </button>
+                            <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-xl text-xs transition-all shadow-xs cursor-pointer">Cadastrar</button>
                         </form>
                         <div class="pt-2 border-t border-slate-100 dark:border-slate-700">
                             <h4 class="text-xs font-bold text-muted uppercase tracking-wider mb-2">Tabela de Preços</h4>
                             <div class="max-h-48 overflow-y-auto custom-scrollbar">
-                                <table class="w-full text-left text-xs">
-                                    <tbody id="tbl-servicos" class="divide-y divide-slate-100 dark:divide-slate-700/50"></tbody>
-                                </table>
+                                <table class="w-full text-left text-xs"><tbody id="tbl-servicos" class="divide-y divide-slate-100 dark:divide-slate-700/50"></tbody></table>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </section>
 
@@ -330,48 +316,30 @@
                             <label class="text-[11px] font-bold text-muted uppercase tracking-wide">Serviço Realizado</label>
                             <select id="lan-servico" required class="input-field w-full mt-1 px-4 py-2 border rounded-xl text-sm focus:outline-none bg-transparent"></select>
                         </div>
-                        <!-- Container para exibir dinamicamente a equipe integrada (Ao lado) -->
                         <div id="lan-membros-container" class="md:col-span-2 bg-slate-500/5 p-3 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 hidden">
                             <span class="text-[11px] font-bold text-muted uppercase tracking-wide block mb-1"><i class="fa-solid fa-users text-indigo-500 mr-1"></i> Integrantes da Equipe (Ao Lado):</span>
                             <div id="lan-membros-lista" class="text-xs font-semibold text-main flex flex-wrap gap-1.5"></div>
                         </div>
                         <div class="md:col-span-2">
                             <label class="text-[11px] font-bold text-muted uppercase tracking-wide">Nome do Condomínio ou Prédio</label>
-                            <input type="text" id="lan-condominio" required class="input-field w-full mt-1 px-4 py-2 border rounded-xl text-sm focus:outline-none" placeholder="Ex: Condomínio Residencial Bella Vista">
+                            <input type="text" id="lan-condominio" required class="input-field w-full mt-1 px-4 py-2 border rounded-xl text-sm focus:outline-none">
                         </div>
                         <div class="md:col-span-2 flex justify-end">
-                            <button type="submit" class="w-full md:w-auto bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 px-6 rounded-xl text-sm shadow-xs transition-all cursor-pointer">
-                                Lançar Atividade
-                            </button>
+                            <button type="submit" class="w-full md:w-auto bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 px-6 rounded-xl text-sm shadow-xs transition-all cursor-pointer">Lançar Atividade</button>
                         </div>
                     </form>
                 </div>
 
-                <!-- FILTROS AVANÇADOS -->
                 <div class="bg-card p-6 rounded-2xl border shadow-xs space-y-4">
                     <div class="flex flex-wrap items-center justify-between gap-4">
-                        <h4 class="font-bold text-main text-sm"><i class="fa-solid fa-filter text-indigo-500 mr-1"></i> Filtros do Histórico</h4>
-                        <button onclick="limparFiltrosHistorico()" class="text-xs font-semibold text-indigo-500 hover:underline">Limpar Filtros</button>
+                        <h4 class="font-bold text-main text-sm"><i class="fa-solid fa-filter text-indigo-500 mr-1"></i> Histórico de Atividades</h4>
                     </div>
                     
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                        <input type="text" id="filtro-busca" oninput="filtrarHistorico()" class="input-field px-4 py-2 border rounded-xl text-xs focus:outline-none" placeholder="Buscar por Condomínio/Prédio...">
-                        <select id="filtro-grupo" onchange="filtrarHistorico()" class="input-field px-4 py-2 border rounded-xl text-xs focus:outline-none bg-transparent">
-                            <option value="">Todos os Grupos</option>
-                        </select>
-                        <select id="filtro-tecnico" onchange="filtrarHistorico()" class="input-field px-4 py-2 border rounded-xl text-xs focus:outline-none bg-transparent">
-                            <option value="">Todos os Técnicos</option>
-                        </select>
-                        <select id="filtro-servico" onchange="filtrarHistorico()" class="input-field px-4 py-2 border rounded-xl text-xs focus:outline-none bg-transparent">
-                            <option value="">Todos os Serviços</option>
-                        </select>
-                    </div>
-
-                    <!-- TABELA DE LANÇAMENTOS -->
                     <div class="overflow-x-auto pt-2">
                         <table class="w-full text-left text-xs border-collapse">
                             <thead>
                                 <tr class="bg-slate-500/5 text-muted font-bold border-b border-slate-200 dark:border-slate-700">
+                                    <th class="p-3">Data/Mês</th>
                                     <th class="p-3">Grupo</th>
                                     <th class="p-3">Técnico Líder</th>
                                     <th class="p-3">Condomínio / Prédio</th>
@@ -388,16 +356,14 @@
 
             <!-- ================= TELA 4: FINANCEIRO ================= -->
             <section id="tab-financeiro" class="hidden space-y-6">
-                <!-- RESUMO CONSOLIDADO FINANCEIRO EM CARDS -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="p-6 rounded-2xl bg-gradient-to-br from-indigo-600 to-indigo-800 text-white shadow-lg flex flex-col justify-between h-40">
                         <div class="flex items-center justify-between">
-                            <span class="text-xs font-bold tracking-widest uppercase opacity-80">Total Geral de Repasses</span>
+                            <span class="text-xs font-bold tracking-widest uppercase opacity-80">Total Geral de Repasses (Global)</span>
                             <div class="p-2 bg-white/10 rounded-xl text-lg"><i class="fa-solid fa-hand-holding-dollar"></i></div>
                         </div>
                         <div>
                             <h2 id="fin-card-total-geral" class="text-3xl font-black value-animated">R$ 0,00</h2>
-                            <p class="text-[10px] opacity-70 mt-1 font-medium">Soma de todas as atividades liquidadas por todas as equipes</p>
                         </div>
                     </div>
                     <div class="p-6 rounded-2xl bg-card border shadow-md flex flex-col justify-between h-40">
@@ -407,25 +373,21 @@
                         </div>
                         <div>
                             <h2 id="fin-card-media-equipe" class="text-3xl font-black text-main value-animated">R$ 0,00</h2>
-                            <p class="text-[10px] text-muted mt-1 font-medium">Valor médio distribuído entre os grupos cadastrados</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- TABELA ORGANIZADA DE PAGAMENTOS -->
                 <div class="bg-card p-6 rounded-2xl border shadow-sm space-y-4">
                     <div>
-                        <h3 class="text-md font-bold text-main"><i class="fa-solid fa-money-bill-transfer text-indigo-500 mr-2"></i> Detalhamento de Valores por Grupo de Trabalho</h3>
-                        <p class="text-xs text-muted">Visão limpa contendo as quantidades físicas de ordens efetuadas e montantes devidos por equipe.</p>
+                        <h3 class="text-md font-bold text-main"><i class="fa-solid fa-money-bill-transfer text-indigo-500 mr-2"></i> Detalhamento por Equipe (Todo o Histórico)</h3>
                     </div>
-
                     <div class="overflow-x-auto">
                         <table class="w-full text-left text-xs border-collapse">
                             <thead>
                                 <tr class="bg-slate-500/5 text-muted font-bold border-b border-slate-200 dark:border-slate-700">
-                                    <th class="p-4 rounded-l-xl">Identificação Customizada da Equipe / Grupo</th>
+                                    <th class="p-4 rounded-l-xl">Equipe / Grupo</th>
                                     <th class="p-4 text-center">Quantidade de Serviços</th>
-                                    <th class="p-4 text-right rounded-r-xl">Total Líquido a Pagar à Equipe (R$)</th>
+                                    <th class="p-4 text-right rounded-r-xl">Total Líquido a Pagar (R$)</th>
                                 </tr>
                             </thead>
                             <tbody id="tbl-financeiro-grupos" class="divide-y divide-slate-100 dark:divide-slate-700/40 font-medium"></tbody>
@@ -434,9 +396,8 @@
                 </div>
             </section>
 
-            <!-- ================= TELA 5: MATERIAIS & DESPESAS (NOVA) ================= -->
+            <!-- ================= TELA 5: MATERIAIS & DESPESAS ================= -->
             <section id="tab-despesas" class="hidden space-y-6">
-                <!-- Dashboard de Despesas -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div class="bg-card p-5 rounded-2xl border shadow-xs flex items-center justify-between">
                         <div>
@@ -455,37 +416,39 @@
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <!-- Form Cadastro de Despesa -->
                     <div class="bg-card p-5 rounded-2xl border shadow-xs space-y-4 lg:col-span-1">
                         <h3 class="text-sm font-bold text-main"><i class="fa-solid fa-cart-plus text-indigo-500 mr-2"></i> Registrar Despesa</h3>
                         <form id="form-despesa" onsubmit="cadastrarDespesa(event)" class="space-y-3">
                             <div>
                                 <label class="text-[11px] font-bold text-muted uppercase tracking-wide">Material / Descrição</label>
-                                <input type="text" id="desp-nome" required class="input-field w-full mt-1 px-4 py-2 border rounded-xl text-sm focus:outline-none" placeholder="Ex: Bobina de Fibra Drop">
+                                <input type="text" id="desp-nome" required class="input-field w-full mt-1 px-4 py-2 border rounded-xl text-sm focus:outline-none">
                             </div>
                             <div class="grid grid-cols-2 gap-2">
                                 <div>
                                     <label class="text-[11px] font-bold text-muted uppercase tracking-wide">Qtd</label>
-                                    <input type="number" id="desp-qtd" required min="1" class="input-field w-full mt-1 px-4 py-2 border rounded-xl text-sm focus:outline-none" placeholder="1">
+                                    <input type="number" id="desp-qtd" required min="1" class="input-field w-full mt-1 px-4 py-2 border rounded-xl text-sm focus:outline-none">
                                 </div>
                                 <div>
                                     <label class="text-[11px] font-bold text-muted uppercase tracking-wide">Valor Un. (R$)</label>
-                                    <input type="number" step="0.01" id="desp-valor" required class="input-field w-full mt-1 px-4 py-2 border rounded-xl text-sm focus:outline-none" placeholder="0.00">
+                                    <input type="number" step="0.01" id="desp-valor" required class="input-field w-full mt-1 px-4 py-2 border rounded-xl text-sm focus:outline-none">
                                 </div>
                             </div>
-                            <button type="submit" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-semibold py-2 px-4 rounded-xl text-xs transition-all shadow-xs cursor-pointer mt-2">
-                                Lançar Despesa
-                            </button>
+                            <button type="submit" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-semibold py-2 px-4 rounded-xl text-xs transition-all shadow-xs cursor-pointer mt-2">Lançar Despesa</button>
                         </form>
                     </div>
 
-                    <!-- Tabela de Despesas -->
                     <div class="bg-card p-5 rounded-2xl border shadow-xs space-y-4 lg:col-span-2">
-                        <h3 class="text-sm font-bold text-main"><i class="fa-solid fa-list text-indigo-500 mr-2"></i> Histórico de Materiais e Gastos</h3>
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-sm font-bold text-main"><i class="fa-solid fa-list text-indigo-500 mr-2"></i> Histórico de Materiais</h3>
+                            <button onclick="limparTodasDespesas()" class="text-[10px] font-bold bg-rose-100 text-rose-700 hover:bg-rose-600 hover:text-white px-3 py-1.5 rounded-lg transition-all border border-rose-200">
+                                <i class="fa-solid fa-trash-can mr-1"></i> Apagar Toda a Lista
+                            </button>
+                        </div>
                         <div class="overflow-x-auto max-h-[300px] custom-scrollbar">
                             <table class="w-full text-left text-xs border-collapse">
                                 <thead>
                                     <tr class="bg-slate-500/5 text-muted font-bold border-b border-slate-200 dark:border-slate-700">
+                                        <th class="p-3">Data/Mês</th>
                                         <th class="p-3">Material</th>
                                         <th class="p-3 text-center">Qtd</th>
                                         <th class="p-3 text-right">Valor Un.</th>
@@ -503,6 +466,27 @@
     </main>
 
     <!-- ================= MODAIS ================= -->
+    
+    <!-- MODAL LIMPEZA / NOVO MÊS -->
+    <div id="modal-limpeza" class="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center hidden p-4 z-50">
+        <div class="bg-card p-6 rounded-2xl border shadow-xl max-w-sm w-full space-y-4">
+            <h4 class="font-bold text-main text-md"><i class="fa-solid fa-broom text-rose-500 mr-1"></i> Limpeza de Histórico</h4>
+            <p class="text-xs text-muted">Exclua lançamentos e despesas de meses antigos ou zere tudo para iniciar um novo ciclo.</p>
+            
+            <div class="space-y-3 pt-2">
+                <div>
+                    <label class="text-[11px] font-bold text-muted uppercase tracking-wide">Selecione o Mês para Apagar</label>
+                    <select id="limpar-filtro-mes" class="input-field w-full mt-1 px-4 py-2 border rounded-xl bg-transparent text-sm focus:outline-none"></select>
+                </div>
+            </div>
+
+            <div class="flex gap-2 justify-end pt-4 border-t border-slate-100 dark:border-slate-700 mt-4">
+                <button onclick="fecharModalLimpeza()" class="px-4 py-2 text-xs font-semibold text-muted hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition-all cursor-pointer">Cancelar</button>
+                <button onclick="executarLimpeza()" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold rounded-xl shadow-xs transition-all cursor-pointer"><i class="fa-solid fa-trash-can mr-1"></i> Apagar Dados</button>
+            </div>
+        </div>
+    </div>
+
     <!-- MODAL SELETOR PDF -->
     <div id="modal-pdf" class="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center hidden p-4 z-50">
         <div class="bg-card p-6 rounded-2xl border shadow-xl max-w-sm w-full space-y-4">
@@ -518,10 +502,10 @@
         </div>
     </div>
 
-    <!-- MODAL EDIÇÃO DE LANÇAMENTO -->
+    <!-- MODAL EDIÇÃO -->
     <div id="modal-editar" class="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center hidden p-4 z-50">
         <div class="bg-card p-6 rounded-2xl border shadow-xl max-w-md w-full space-y-4">
-            <h4 class="font-bold text-main text-md"><i class="fa-solid fa-pen-to-square text-indigo-500 mr-1"></i> Editar Registro de Atividade</h4>
+            <h4 class="font-bold text-main text-md"><i class="fa-solid fa-pen-to-square text-indigo-500 mr-1"></i> Editar Registro</h4>
             <form id="form-editar-lancamento" onsubmit="salvarEdicaoLancamento(event)" class="space-y-3">
                 <input type="hidden" id="edit-lan-id">
                 <div>
@@ -538,47 +522,40 @@
                 </div>
                 <div class="flex gap-2 justify-end pt-3">
                     <button type="button" onclick="fecharModalEditar()" class="px-4 py-2 text-xs font-semibold text-muted hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition-all cursor-pointer">Cancelar</button>
-                    <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-xl shadow-xs transition-all cursor-pointer">Salvar Alterações</button>
+                    <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-xl shadow-xs transition-all cursor-pointer">Salvar</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- TEMPLATE OCULTO PARA IMPRESSÃO DO PDF (NOVO E ORGANIZADO) -->
+    <!-- TEMPLATE OCULTO PARA IMPRESSÃO DO PDF -->
     <div id="pdf-print-template" class="hidden bg-white text-slate-900 mx-auto" style="width: 210mm; min-height: 297mm; padding: 20mm; font-family: sans-serif;">
-        <!-- Cabeçalho -->
         <div class="flex justify-between items-start border-b-2 border-indigo-600 pb-6 mb-8">
             <div>
                 <h1 class="text-3xl font-black text-indigo-900 tracking-tight">MDU SERVIÇOS</h1>
-                <p class="text-sm text-slate-500 font-medium mt-1">Relatório Oficial de Desempenho e Repasses</p>
+                <p class="text-sm text-slate-500 font-medium mt-1">Relatório Oficial de Desempenho</p>
             </div>
             <div class="text-right">
                 <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Data de Emissão</p>
                 <p id="pdf-meta-data" class="text-sm font-semibold text-slate-700"></p>
             </div>
         </div>
-
-        <!-- Filtro Aplicado Info -->
         <div class="bg-slate-50 p-5 rounded-xl border border-slate-100 mb-8">
             <h2 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Escopo do Relatório</h2>
             <p id="pdf-meta-filtro" class="text-lg font-bold text-indigo-900"></p>
         </div>
-
-        <!-- Tabela -->
         <table class="w-full text-left text-sm border-collapse mb-8">
             <thead>
                 <tr class="bg-indigo-50 text-indigo-900 font-bold border-b-2 border-indigo-200">
+                    <th class="py-3 px-2">Data/Mês</th>
                     <th class="py-3 px-2">Grupo / Equipe</th>
                     <th class="py-3 px-2">Técnico Líder</th>
-                    <th class="py-3 px-2">Condomínio / Edifício</th>
-                    <th class="py-3 px-2">Serviço Prestado</th>
-                    <th class="py-3 px-2 text-right">Valor do Repasse</th>
+                    <th class="py-3 px-2">Condomínio</th>
+                    <th class="py-3 px-2 text-right">Repasse</th>
                 </tr>
             </thead>
             <tbody id="pdf-table-body" class="divide-y divide-slate-100"></tbody>
         </table>
-
-        <!-- Total Geral -->
         <div class="flex justify-end mt-auto">
             <div class="bg-indigo-600 p-6 rounded-2xl text-center min-w-[250px] shadow-lg">
                 <span class="text-[11px] font-bold text-indigo-200 uppercase tracking-widest">Total Líquido Devido</span>
@@ -589,46 +566,33 @@
 
     <!-- SCRIPT LOGIC ENGINE -->
     <script>
-        // Banco de Dados em LocalStorage V3 (Evita conflitos de propriedades anteriores)
-        let db = JSON.parse(localStorage.getItem('MDU_ADVANCED_DB_V3')) || {
-            grupos: [
-                { id: 1, nome: "Equipe Alpha" },
-                { id: 2, nome: "Equipe Beta" }
-            ],
-            tecnicos: [
-                { id: 1, nome: "Alexandre Silva", grupoId: 1, isLider: true },
-                { id: 2, nome: "Bruno Carvalho", grupoId: 1, isLider: false },
-                { id: 3, nome: "Carlos Henrique", grupoId: 2, isLider: true }
-            ],
-            servicos: [
-                { id: 1, nome: "Instalação Fibra Condomínio", valor: 250.00 },
-                { id: 2, nome: "Manutenção de Prumada", valor: 400.00 }
-            ],
-            lancamentos: [
-                { id: 1, techNome: "Alexandre Silva", grupoId: 1, srvNome: "Instalação Fibra Condomínio", srvValor: 250.00, condominio: "Residencial Jardins" },
-                { id: 2, techNome: "Carlos Henrique", grupoId: 2, srvNome: "Manutenção de Prumada", srvValor: 400.00, condominio: "Edifício Supreme" }
-            ],
-            despesas: [] // <-- NOVO: Array para despesas e materiais
+        // Banco de Dados em LocalStorage V4
+        let db = JSON.parse(localStorage.getItem('MDU_ADVANCED_DB_V4')) || {
+            grupos: [], tecnicos: [], servicos: [], lancamentos: [], despesas: []
         };
 
-        // Garante que bases antigas recebam o array de despesas
-        if (!db.despesas) db.despesas = [];
+        // Migração de bases antigas para adicionar a data do mês
+        let needsMigration = false;
+        db.lancamentos.forEach(l => { if(!l.mes) { l.mes = new Date().toISOString().slice(0, 7); needsMigration = true; } });
+        db.despesas.forEach(d => { if(!d.mes) { d.mes = new Date().toISOString().slice(0, 7); needsMigration = true; } });
+        if(needsMigration) localStorage.setItem('MDU_ADVANCED_DB_V4', JSON.stringify(db));
 
         let chartInstance = null;
-        let lastVal_faturamento = 0;
-        let lastVal_pagar = 0;
-        let lastVal_total_servicos = 0;
-        let lastVal_fin_geral = 0;
-        let lastVal_fin_media = 0;
-        let lastVal_desp_total = 0;
-        let lastVal_desp_itens = 0;
+        let lastVal_faturamento = 0; let lastVal_pagar = 0; let lastVal_total_servicos = 0;
+        let lastVal_fin_geral = 0; let lastVal_fin_media = 0;
+        let lastVal_desp_total = 0; let lastVal_desp_itens = 0;
+
+        function formatarMes(strMes) {
+            if(!strMes) return '--';
+            const [ano, mes] = strMes.split('-');
+            return `${mes}/${ano}`;
+        }
 
         function salvarDB() {
-            localStorage.setItem('MDU_ADVANCED_DB_V3', JSON.stringify(db));
+            localStorage.setItem('MDU_ADVANCED_DB_V4', JSON.stringify(db));
             renderizarTudo();
         }
 
-        // Função de Animação de Valores (Contador Progressivo)
         function animateValue(objId, start, end, duration, isCurrency = true) {
             const obj = document.getElementById(objId);
             if (!obj) return;
@@ -637,19 +601,13 @@
                 if (!startTimestamp) startTimestamp = timestamp;
                 const progress = Math.min((timestamp - startTimestamp) / duration, 1);
                 const current = progress * (end - start) + start;
-                if (isCurrency) {
-                    obj.innerText = "R$ " + current.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                } else {
-                    obj.innerText = Math.floor(current).toString();
-                }
-                if (progress < 1) {
-                    window.requestAnimationFrame(step);
-                }
+                if (isCurrency) obj.innerText = "R$ " + current.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                else obj.innerText = Math.floor(current).toString();
+                if (progress < 1) window.requestAnimationFrame(step);
             };
             window.requestAnimationFrame(step);
         }
 
-        // Abas
         function switchTab(tabId) {
             document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
             document.getElementById(`tab-${tabId}`).classList.remove('hidden');
@@ -659,29 +617,22 @@
             });
 
             const currentBtn = document.getElementById(`btn-${tabId}`);
-            if (currentBtn) {
-                currentBtn.className = "tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-indigo-600 text-white font-medium shadow-md transition-all";
-            }
+            if (currentBtn) currentBtn.className = "tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-indigo-600 text-white font-medium shadow-md transition-all";
 
             const titulos = {
-                dashboard: 'Dashboard Geral de Produção',
-                cadastros: 'Identificação de Grupos Customizados e Técnicos',
-                lancamentos: 'Histórico de Atividades e Endereçamento',
-                financeiro: 'Gastos & Pagamentos Totais por Equipe',
-                despesas: 'Controle de Materiais e Despesas'
+                dashboard: 'Dashboard Consolidados',
+                cadastros: 'Identificação e Equipes',
+                lancamentos: 'Histórico de Atividades',
+                financeiro: 'Gastos & Pagamentos',
+                despesas: 'Materiais & Despesas'
             };
             document.getElementById('page-title').innerText = titulos[tabId];
 
-            if(tabId === 'dashboard') {
-                calcularDashboard(true);
-            } else if(tabId === 'financeiro') {
-                calcularFinanceiroAnimado();
-            } else if(tabId === 'despesas') {
-                atualizarDashboardDespesas(true);
-            }
+            if(tabId === 'dashboard') calcularDashboard(true);
+            else if(tabId === 'financeiro') calcularFinanceiroAnimado();
+            else if(tabId === 'despesas') atualizarDashboardDespesas(true);
         }
 
-        // Temas
         function setTheme(theme) {
             const body = document.getElementById('app-body');
             body.className = '';
@@ -701,407 +652,172 @@
             }
         }
 
-        // CRUD: Grupos Customizados
-        function salvarGrupo(e) {
-            e.preventDefault();
-            const id = document.getElementById('grp-id').value;
-            const nome = document.getElementById('grp-nome').value.trim();
+        // LIMPEZA DE DADOS (NOVO MÊS)
+        function abrirModalLimpeza() { document.getElementById('modal-limpeza').classList.remove('hidden'); }
+        function fecharModalLimpeza() { document.getElementById('modal-limpeza').classList.add('hidden'); }
 
-            if(id) {
-                const idx = db.grupos.findIndex(g => g.id == id);
-                if(idx !== -1) db.grupos[idx].nome = nome;
-            } else {
-                db.grupos.push({ id: Date.now(), nome: nome });
+        function executarLimpeza() {
+            const mesSelecionado = document.getElementById('limpar-filtro-mes').value;
+            
+            if (confirm(`Tem certeza que deseja APAGAR os dados de: ${mesSelecionado === 'Todos' ? 'TODO O SISTEMA' : formatarMes(mesSelecionado)}?\nIsso não apagará equipes nem serviços, apenas os lançamentos e despesas.`)) {
+                if (mesSelecionado === 'Todos') {
+                    db.lancamentos = [];
+                    db.despesas = [];
+                } else {
+                    db.lancamentos = db.lancamentos.filter(l => l.mes !== mesSelecionado);
+                    db.despesas = db.despesas.filter(d => d.mes !== mesSelecionado);
+                }
+                salvarDB();
+                fecharModalLimpeza();
+                alert("Dados apagados com sucesso! Você iniciou um novo ciclo.");
             }
-            limparFormGrupo();
-            salvarDB();
         }
 
-        function editarGrupo(id, nome) {
-            document.getElementById('grp-id').value = id;
-            document.getElementById('grp-nome').value = nome;
-            document.getElementById('btn-submit-grupo').innerText = "Atualizar Nome";
-            document.getElementById('btn-cancelar-grupo').classList.remove('hidden');
-        }
-
-        function limparFormGrupo() {
-            document.getElementById('grp-id').value = '';
-            document.getElementById('grp-nome').value = '';
-            document.getElementById('btn-submit-grupo').innerText = "Salvar Grupo";
-            document.getElementById('btn-cancelar-grupo').classList.add('hidden');
-        }
-
-        // CRUD: Técnicos
-        function cadastrarTecnico(e) {
-            e.preventDefault();
-            const nome = document.getElementById('tech-nome').value.trim();
-            const grupoId = parseInt(document.getElementById('tech-grupo').value);
-            const isLider = document.getElementById('tech-lider').checked;
-
-            db.tecnicos.push({ id: Date.now(), nome, grupoId, isLider: isLider });
-            document.getElementById('tech-nome').value = '';
-            document.getElementById('tech-lider').checked = false;
-            salvarDB();
-        }
-
-        function excluirGrupo(id) {
-            if(confirm("Deseja deletar este grupo? Os técnicos vinculados perderão a referência de equipe.")) {
-                db.grupos = db.grupos.filter(g => g.id !== id);
+        function limparTodasDespesas() {
+            if(confirm("Deseja deletar TODAS as despesas e materiais já registrados no sistema de uma vez?")) {
+                db.despesas = [];
                 salvarDB();
             }
         }
 
-        function excluirTecnico(id) {
-            if(confirm("Remover este técnico da base de dados?")) {
-                db.tecnicos = db.tecnicos.filter(t => t.id !== id);
-                salvarDB();
-            }
-        }
+        // CRUD BÁSICO (Grupos, Técnicos, Serviços)
+        function salvarGrupo(e) { e.preventDefault(); const id = document.getElementById('grp-id').value; const nome = document.getElementById('grp-nome').value.trim(); if(id) { const idx = db.grupos.findIndex(g => g.id == id); if(idx !== -1) db.grupos[idx].nome = nome; } else { db.grupos.push({ id: Date.now(), nome: nome }); } limparFormGrupo(); salvarDB(); }
+        function editarGrupo(id, nome) { document.getElementById('grp-id').value = id; document.getElementById('grp-nome').value = nome; document.getElementById('btn-submit-grupo').innerText = "Atualizar"; document.getElementById('btn-cancelar-grupo').classList.remove('hidden'); }
+        function limparFormGrupo() { document.getElementById('grp-id').value = ''; document.getElementById('grp-nome').value = ''; document.getElementById('btn-submit-grupo').innerText = "Salvar"; document.getElementById('btn-cancelar-grupo').classList.add('hidden'); }
+        function excluirGrupo(id) { if(confirm("Deseja deletar este grupo?")) { db.grupos = db.grupos.filter(g => g.id !== id); salvarDB(); } }
+        
+        function cadastrarTecnico(e) { e.preventDefault(); const nome = document.getElementById('tech-nome').value.trim(); const grupoId = parseInt(document.getElementById('tech-grupo').value); const isLider = document.getElementById('tech-lider').checked; db.tecnicos.push({ id: Date.now(), nome, grupoId, isLider: isLider }); document.getElementById('tech-nome').value = ''; document.getElementById('tech-lider').checked = false; salvarDB(); }
+        function excluirTecnico(id) { if(confirm("Remover este técnico?")) { db.tecnicos = db.tecnicos.filter(t => t.id !== id); salvarDB(); } }
+        
+        function cadastrarServico(e) { e.preventDefault(); const nome = document.getElementById('srv-nome').value.trim(); const valor = parseFloat(document.getElementById('srv-valor').value); db.servicos.push({ id: Date.now(), nome, valor }); document.getElementById('form-servico').reset(); salvarDB(); }
+        function excluirServico(id) { if(confirm("Deseja excluir este serviço?")) { db.servicos = db.servicos.filter(s => s.id !== id); salvarDB(); } }
 
-        // CRUD: Serviços
-        function cadastrarServico(e) {
-            e.preventDefault();
-            const nome = document.getElementById('srv-nome').value.trim();
-            const valor = parseFloat(document.getElementById('srv-valor').value);
-
-            db.servicos.push({ id: Date.now(), nome, valor });
-            document.getElementById('form-servico').reset();
-            salvarDB();
-        }
-
-        function excluirServico(id) {
-            if(confirm("Deseja excluir este tipo de serviço?")) {
-                db.servicos = db.servicos.filter(s => s.id !== id);
-                salvarDB();
-            }
-        }
-
-        // Atualização Dinâmica dos Integrantes "Ao Lado"
         function atualizarMembrosAoLado() {
-            const techId = document.getElementById('lan-tecnico').value;
-            const container = document.getElementById('lan-membros-container');
-            const listaDiv = document.getElementById('lan-membros-lista');
-
-            if (!techId) {
-                container.classList.add('hidden');
-                return;
-            }
-
+            const techId = document.getElementById('lan-tecnico').value; const container = document.getElementById('lan-membros-container'); const listaDiv = document.getElementById('lan-membros-lista');
+            if (!techId) { container.classList.add('hidden'); return; }
             const lider = db.tecnicos.find(t => t.id == techId);
-            if (!lider) {
-                container.classList.add('hidden');
-                return;
-            }
-
+            if (!lider) { container.classList.add('hidden'); return; }
             const membrosAoLado = db.tecnicos.filter(t => t.grupoId === lider.grupoId && t.id != lider.id);
-
-            if (membrosAoLado.length > 0) {
-                listaDiv.innerHTML = membrosAoLado.map(m => `
-                    <span class="bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 px-2.5 py-1 rounded-lg text-xs font-semibold border border-indigo-500/20">
-                        <i class="fa-solid fa-user text-[10px] mr-1"></i>${m.nome}
-                    </span>
-                `).join('');
-            } else {
-                listaDiv.innerHTML = `<span class="text-xs text-muted italic">Nenhum outro técnico compõe este grupo atualmente.</span>`;
-            }
+            if (membrosAoLado.length > 0) { listaDiv.innerHTML = membrosAoLado.map(m => `<span class="bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 px-2.5 py-1 rounded-lg text-xs font-semibold border border-indigo-500/20"><i class="fa-solid fa-user text-[10px] mr-1"></i>${m.nome}</span>`).join(''); } else { listaDiv.innerHTML = `<span class="text-xs text-muted italic">Nenhum outro técnico compõe este grupo atualmente.</span>`; }
             container.classList.remove('hidden');
         }
 
-        // CRUD: Lançamento
         function registrarLancamento(e) {
             e.preventDefault();
-            const techId = document.getElementById('lan-tecnico').value;
-            const srvId = document.getElementById('lan-servico').value;
-            const condominio = document.getElementById('lan-condominio').value.trim();
-
-            const tech = db.tecnicos.find(t => t.id == techId);
-            const srv = db.servicos.find(s => s.id == srvId);
-
+            const techId = document.getElementById('lan-tecnico').value; const srvId = document.getElementById('lan-servico').value; const condominio = document.getElementById('lan-condominio').value.trim();
+            const tech = db.tecnicos.find(t => t.id == techId); const srv = db.servicos.find(s => s.id == srvId);
             if(tech && srv) {
                 db.lancamentos.push({
-                    id: Date.now(),
-                    techNome: tech.nome,
-                    grupoId: tech.grupoId,
-                    srvNome: srv.nome,
-                    srvValor: srv.valor,
-                    condominio: condominio
+                    id: Date.now(), techNome: tech.nome, grupoId: tech.grupoId, srvNome: srv.nome, srvValor: srv.valor, condominio: condominio,
+                    mes: new Date().toISOString().slice(0, 7) // Salva o ano-mês atual para filtro
                 });
-                document.getElementById('lan-condominio').value = '';
-                salvarDB();
+                document.getElementById('lan-condominio').value = ''; salvarDB();
             }
         }
+        function deletarLancamento(id) { if(confirm("Deseja excluir permanentemente?")) { db.lancamentos = db.lancamentos.filter(l => l.id !== id); salvarDB(); } }
 
-        function deletarLancamento(id) {
-            if(confirm("Deseja excluir permanentemente este lançamento?")) {
-                db.lancamentos = db.lancamentos.filter(l => l.id !== id);
-                salvarDB();
-            }
-        }
-
-        // CRUD: Despesas (NOVO)
         function cadastrarDespesa(e) {
             e.preventDefault();
-            const nome = document.getElementById('desp-nome').value.trim();
-            const qtd = parseInt(document.getElementById('desp-qtd').value);
-            const valor = parseFloat(document.getElementById('desp-valor').value);
-
-            db.despesas.push({ 
-                id: Date.now(), 
-                nome, 
-                qtd, 
-                valor, 
-                total: qtd * valor 
-            });
-            
-            document.getElementById('form-despesa').reset();
-            salvarDB();
+            const nome = document.getElementById('desp-nome').value.trim(); const qtd = parseInt(document.getElementById('desp-qtd').value); const valor = parseFloat(document.getElementById('desp-valor').value);
+            db.despesas.push({ id: Date.now(), nome, qtd, valor, total: qtd * valor, mes: new Date().toISOString().slice(0, 7) });
+            document.getElementById('form-despesa').reset(); salvarDB();
         }
+        function deletarDespesa(id) { if(confirm("Remover despesa?")) { db.despesas = db.despesas.filter(d => d.id !== id); salvarDB(); } }
 
-        function deletarDespesa(id) {
-            if(confirm("Deseja remover este registro de material permanentemente?")) {
-                db.despesas = db.despesas.filter(d => d.id !== id);
-                salvarDB();
-            }
-        }
-
-        // Modais de Edição de Atividade
-        function abrirModalEditar(id) {
-            const l = db.lancamentos.find(item => item.id == id);
-            if(!l) return;
-
-            document.getElementById('edit-lan-id').value = l.id;
-            document.getElementById('edit-lan-condominio').value = l.condominio;
-
-            document.getElementById('edit-lan-tecnico').innerHTML = db.tecnicos.filter(t => t.isLider).map(t => {
-                const gNome = db.grupos.find(g => g.id === t.grupoId)?.nome || 'Sem Grupo';
-                return `<option value="${t.nome}">${t.nome} (${gNome})</option>`;
-            }).join('');
-            document.getElementById('edit-lan-tecnico').value = l.techNome;
-
-            document.getElementById('edit-lan-servico').innerHTML = db.servicos.map(s => `<option value="${s.nome}">${s.nome} - R$ ${s.valor}</option>`).join('');
-            document.getElementById('edit-lan-servico').value = l.srvNome;
-
-            document.getElementById('modal-editar').classList.remove('hidden');
-        }
-
+        function abrirModalEditar(id) { const l = db.lancamentos.find(item => item.id == id); if(!l) return; document.getElementById('edit-lan-id').value = l.id; document.getElementById('edit-lan-condominio').value = l.condominio; document.getElementById('edit-lan-tecnico').innerHTML = db.tecnicos.filter(t => t.isLider).map(t => { const gNome = db.grupos.find(g => g.id === t.grupoId)?.nome || 'Sem Grupo'; return `<option value="${t.nome}">${t.nome} (${gNome})</option>`; }).join(''); document.getElementById('edit-lan-tecnico').value = l.techNome; document.getElementById('edit-lan-servico').innerHTML = db.servicos.map(s => `<option value="${s.nome}">${s.nome} - R$ ${s.valor}</option>`).join(''); document.getElementById('edit-lan-servico').value = l.srvNome; document.getElementById('modal-editar').classList.remove('hidden'); }
         function fecharModalEditar() { document.getElementById('modal-editar').classList.add('hidden'); }
+        function salvarEdicaoLancamento(e) { e.preventDefault(); const id = document.getElementById('edit-lan-id').value; const techNome = document.getElementById('edit-lan-tecnico').value; const srvNome = document.getElementById('edit-lan-servico').value; const condominio = document.getElementById('edit-lan-condominio').value.trim(); const tech = db.tecnicos.find(t => t.nome === techNome); const srv = db.servicos.find(s => s.nome === srvNome); const lanIndex = db.lancamentos.findIndex(l => l.id == id); if(lanIndex !== -1 && tech && srv) { db.lancamentos[lanIndex].techNome = tech.nome; db.lancamentos[lanIndex].grupoId = tech.grupoId; db.lancamentos[lanIndex].srvNome = srv.nome; db.lancamentos[lanIndex].srvValor = srv.valor; db.lancamentos[lanIndex].condominio = condominio; fecharModalEditar(); salvarDB(); } }
 
-        function salvarEdicaoLancamento(e) {
-            e.preventDefault();
-            const id = document.getElementById('edit-lan-id').value;
-            const techNome = document.getElementById('edit-lan-tecnico').value;
-            const srvNome = document.getElementById('edit-lan-servico').value;
-            const condominio = document.getElementById('edit-lan-condominio').value.trim();
+        function preencherSelectMeses() {
+            const mesesL = db.lancamentos.map(l => l.mes).filter(Boolean);
+            const mesesD = db.despesas.map(d => d.mes).filter(Boolean);
+            const todosMeses = [...new Set([...mesesL, ...mesesD])].sort().reverse();
+            
+            const htmlFiltros = '<option value="Todos">Todos os Meses (Global)</option>' + todosMeses.map(m => `<option value="${m}">${formatarMes(m)}</option>`).join('');
+            
+            // Atualiza Dashboard
+            const dashFiltroMes = document.getElementById('dash-filtro-mes');
+            const currentDashVal = dashFiltroMes.value;
+            dashFiltroMes.innerHTML = htmlFiltros;
+            if(todosMeses.includes(currentDashVal) || currentDashVal === 'Todos') dashFiltroMes.value = currentDashVal;
 
-            const tech = db.tecnicos.find(t => t.nome === techNome);
-            const srv = db.servicos.find(s => s.nome === srvNome);
-            const lanIndex = db.lancamentos.findIndex(l => l.id == id);
-
-            if(lanIndex !== -1 && tech && srv) {
-                db.lancamentos[lanIndex] = {
-                    id: parseInt(id),
-                    techNome: tech.nome,
-                    grupoId: tech.grupoId,
-                    srvNome: srv.nome,
-                    srvValor: srv.valor,
-                    condominio: condominio
-                };
-                fecharModalEditar();
-                salvarDB();
-            }
+            // Atualiza Modal Limpeza
+            document.getElementById('limpar-filtro-mes').innerHTML = '<option value="Todos">Apagar TODO O SISTEMA (Zerar Tudo)</option>' + todosMeses.map(m => `<option value="${m}">Somente o mês ${formatarMes(m)}</option>`).join('');
         }
 
-        // RENDER GERAL DE INTERFACES E TABELAS
         function renderizarTudo() {
-            // Lista de Grupos
-            document.getElementById('tbl-grupos').innerHTML = db.grupos.map(g => `
-                <tr class="hover:bg-slate-500/5">
-                    <td class="py-2 font-bold text-main">${g.nome}</td>
-                    <td class="py-2 text-right space-x-2">
-                        <button onclick="editarGrupo(${g.id}, '${g.nome}')" class="text-indigo-500 hover:text-indigo-700 text-xs"><i class="fa-regular fa-edit"></i></button>
-                        <button onclick="excluirGrupo(${g.id})" class="text-rose-500 hover:text-rose-700 text-xs"><i class="fa-regular fa-trash-can"></i></button>
-                    </td>
-                </tr>
-            `).join('');
-
-            // Lista de Técnicos
-            document.getElementById('tbl-tecnicos').innerHTML = db.tecnicos.map(t => {
-                const gNome = db.grupos.find(g => g.id === t.grupoId)?.nome || 'Não Vinculado';
-                const tagLider = t.isLider ? `<span class="bg-amber-500/10 text-amber-500 font-bold px-1.5 py-0.5 rounded text-[9px] uppercase ml-2"><i class="fa-solid fa-crown mr-0.5"></i>Líder</span>` : '';
-                return `
-                    <tr class="hover:bg-slate-500/5">
-                        <td class="py-2 font-medium flex items-center">${t.nome}${tagLider}</td>
-                        <td class="py-2 text-indigo-500 font-bold text-[11px]">${gNome}</td>
-                        <td class="py-2 text-right">
-                            <button onclick="excluirTecnico(${t.id})" class="text-rose-500 hover:text-rose-700 text-xs"><i class="fa-regular fa-trash-can"></i></button>
-                        </td>
-                    </tr>
-                `;
-            }).join('');
-
-            // Lista de Serviços
-            document.getElementById('tbl-servicos').innerHTML = db.servicos.map(s => `
-                <tr class="hover:bg-slate-500/5">
-                    <td class="py-2 font-medium">${s.nome}</td>
-                    <td class="py-2 text-right text-emerald-500 font-bold">R$ ${s.valor.toFixed(2)}</td>
-                    <td class="py-2 text-right">
-                        <button onclick="excluirServico(${s.id})" class="text-rose-500 hover:text-rose-700 text-xs"><i class="fa-regular fa-trash-can"></i></button>
-                    </td>
-                </tr>
-            `).join('');
-
-            // Atualiza Dropdowns
-            const grpOptions = db.grupos.map(g => `<option value="${g.id}">${g.nome}</option>`).join('');
-            document.getElementById('tech-grupo').innerHTML = grpOptions;
-
-            document.getElementById('filtro-grupo').innerHTML = '<option value="">Todos os Grupos</option>' + db.grupos.map(g => `<option value="${g.id}">${g.nome}</option>`).join('');
-            document.getElementById('dash-filtro-grupo').innerHTML = '<option value="Todos">Todos os Grupos</option>' + db.grupos.map(g => `<option value="${g.id}">${g.nome}</option>`).join('');
+            document.getElementById('tbl-grupos').innerHTML = db.grupos.map(g => `<tr class="hover:bg-slate-500/5"><td class="py-2 font-bold text-main">${g.nome}</td><td class="py-2 text-right space-x-2"><button onclick="editarGrupo(${g.id}, '${g.nome}')" class="text-indigo-500 hover:text-indigo-700 text-xs"><i class="fa-regular fa-edit"></i></button><button onclick="excluirGrupo(${g.id})" class="text-rose-500 hover:text-rose-700 text-xs"><i class="fa-regular fa-trash-can"></i></button></td></tr>`).join('');
+            document.getElementById('tbl-tecnicos').innerHTML = db.tecnicos.map(t => { const gNome = db.grupos.find(g => g.id === t.grupoId)?.nome || 'Não Vinculado'; const tagLider = t.isLider ? `<span class="bg-amber-500/10 text-amber-500 font-bold px-1.5 py-0.5 rounded text-[9px] uppercase ml-2"><i class="fa-solid fa-crown mr-0.5"></i>Líder</span>` : ''; return `<tr class="hover:bg-slate-500/5"><td class="py-2 font-medium flex items-center">${t.nome}${tagLider}</td><td class="py-2 text-indigo-500 font-bold text-[11px]">${gNome}</td><td class="py-2 text-right"><button onclick="excluirTecnico(${t.id})" class="text-rose-500 hover:text-rose-700 text-xs"><i class="fa-regular fa-trash-can"></i></button></td></tr>`; }).join('');
+            document.getElementById('tbl-servicos').innerHTML = db.servicos.map(s => `<tr class="hover:bg-slate-500/5"><td class="py-2 font-medium">${s.nome}</td><td class="py-2 text-right text-emerald-500 font-bold">R$ ${s.valor.toFixed(2)}</td><td class="py-2 text-right"><button onclick="excluirServico(${s.id})" class="text-rose-500 hover:text-rose-700 text-xs"><i class="fa-regular fa-trash-can"></i></button></td></tr>`).join('');
+            
+            document.getElementById('tech-grupo').innerHTML = db.grupos.map(g => `<option value="${g.id}">${g.nome}</option>`).join('');
+            document.getElementById('dash-filtro-grupo').innerHTML = '<option value="Todos">Todas as Equipes</option>' + db.grupos.map(g => `<option value="${g.id}">${g.nome}</option>`).join('');
             document.getElementById('pdf-filtro-grupo').innerHTML = '<option value="Todas">Todas as Equipes (Geral)</option>' + db.grupos.map(g => `<option value="${g.id}">${g.nome}</option>`).join('');
 
             const apenasLideres = db.tecnicos.filter(t => t.isLider);
-            document.getElementById('lan-tecnico').innerHTML = apenasLideres.map(t => {
-                const gNome = db.grupos.find(g => g.id === t.grupoId)?.nome || 'Sem Grupo';
-                return `<option value="${t.id}">${t.nome} (${gNome})</option>`;
-            }).join('');
-
-            if(apenasLideres.length === 0) {
-                document.getElementById('lan-tecnico').innerHTML = '<option value="">Nenhum Líder Cadastrado</option>';
-            }
-
+            document.getElementById('lan-tecnico').innerHTML = apenasLideres.length ? apenasLideres.map(t => { const gNome = db.grupos.find(g => g.id === t.grupoId)?.nome || 'Sem Grupo'; return `<option value="${t.id}">${t.nome} (${gNome})</option>`; }).join('') : '<option value="">Nenhum Líder</option>';
             document.getElementById('lan-servico').innerHTML = db.servicos.map(s => `<option value="${s.id}">${s.nome} - R$ ${s.valor.toFixed(2)}</option>`).join('');
-            document.getElementById('filtro-tecnico').innerHTML = '<option value="">Todos os Técnicos</option>' + db.tecnicos.map(t => `<option value="${t.nome}">${t.nome}</option>`).join('');
-            document.getElementById('filtro-servico').innerHTML = '<option value="">Todos os Serviços</option>' + db.servicos.map(s => `<option value="${s.nome}">${s.nome}</option>`).join('');
-
+            
+            preencherSelectMeses();
             atualizarMembrosAoLado();
-            filtrarHistorico();
+            
+            // Renderiza lançamentos listando tudo (Apenas dashboard usa filtro forte)
+            document.getElementById('tbl-lancamentos').innerHTML = db.lancamentos.map(l => { const gNome = db.grupos.find(g => g.id === l.grupoId)?.nome || 'Sem Grupo'; return `<tr class="hover:bg-slate-500/5 transition-all text-main"><td class="p-3 text-xs font-bold text-slate-400">${formatarMes(l.mes)}</td><td class="p-3"><span class="bg-indigo-500/10 text-indigo-500 font-bold px-2 py-0.5 rounded text-[10px]">${gNome}</span></td><td class="p-3 font-semibold">${l.techNome}</td><td class="p-3">${l.condominio}</td><td class="p-3 text-xs text-muted">${l.srvNome}</td><td class="p-3 text-right text-emerald-500 font-bold">R$ ${l.srvValor.toFixed(2)}</td><td class="p-3 text-center space-x-2"><button onclick="abrirModalEditar(${l.id})" class="text-indigo-500 hover:text-indigo-700 text-sm"><i class="fa-regular fa-pen-to-square"></i></button><button onclick="deletarLancamento(${l.id})" class="text-rose-500 hover:text-rose-700 text-sm"><i class="fa-regular fa-trash-can"></i></button></td></tr>`; }).join('');
+
             renderizarFinanceiroTabela();
             renderizarDespesas();
+            calcularDashboard(true);
         }
 
-        // Tabela de Despesas e Materiais
         function renderizarDespesas() {
-            document.getElementById('tbl-despesas').innerHTML = db.despesas.map(d => `
-                <tr class="hover:bg-slate-500/5 transition-all text-main">
-                    <td class="p-3 font-semibold">${d.nome}</td>
-                    <td class="p-3 text-center">${d.qtd}</td>
-                    <td class="p-3 text-right text-muted">R$ ${d.valor.toFixed(2)}</td>
-                    <td class="p-3 text-right text-rose-500 font-bold">R$ ${d.total.toFixed(2)}</td>
-                    <td class="p-3 text-center">
-                        <button onclick="deletarDespesa(${d.id})" class="text-rose-500 hover:text-rose-700 text-sm"><i class="fa-regular fa-trash-can"></i></button>
-                    </td>
-                </tr>
-            `).join('') || `<tr><td colspan="5" class="p-3 text-center text-xs text-muted">Nenhum material/despesa registrado no momento.</td></tr>`;
-
+            document.getElementById('tbl-despesas').innerHTML = db.despesas.map(d => `<tr class="hover:bg-slate-500/5 transition-all text-main"><td class="p-3 text-xs font-bold text-slate-400">${formatarMes(d.mes)}</td><td class="p-3 font-semibold">${d.nome}</td><td class="p-3 text-center">${d.qtd}</td><td class="p-3 text-right text-muted">R$ ${d.valor.toFixed(2)}</td><td class="p-3 text-right text-rose-500 font-bold">R$ ${d.total.toFixed(2)}</td><td class="p-3 text-center"><button onclick="deletarDespesa(${d.id})" class="text-rose-500 hover:text-rose-700 text-sm"><i class="fa-regular fa-trash-can"></i></button></td></tr>`).join('') || `<tr><td colspan="6" class="p-3 text-center text-xs text-muted">Nenhum material/despesa registrado.</td></tr>`;
             atualizarDashboardDespesas();
         }
 
         function atualizarDashboardDespesas(force = false) {
             const total = db.despesas.reduce((acc, c) => acc + c.total, 0);
-            const itens = db.despesas.length;
-
             animateValue('dash-despesas-total', force ? 0 : lastVal_desp_total, total, 400, true);
-            animateValue('dash-despesas-itens', force ? 0 : lastVal_desp_itens, itens, 400, false);
-
-            lastVal_desp_total = total;
-            lastVal_desp_itens = itens;
+            animateValue('dash-despesas-itens', force ? 0 : lastVal_desp_itens, db.despesas.length, 400, false);
+            lastVal_desp_total = total; lastVal_desp_itens = db.despesas.length;
         }
 
-        // Filtro Combinado de Atividades
-        function filtrarHistorico() {
-            const busca = document.getElementById('filtro-busca').value.toLowerCase();
-            const grupoId = document.getElementById('filtro-grupo').value;
-            const tecnico = document.getElementById('filtro-tecnico').value;
-            const servico = document.getElementById('filtro-servico').value;
-
-            const filtrados = db.lancamentos.filter(l => {
-                const matchBusca = l.condominio.toLowerCase().includes(busca);
-                const matchGrupo = grupoId === "" || l.grupoId == grupoId;
-                const matchTecnico = tecnico === "" || l.techNome === tecnico;
-                const matchServico = servico === "" || l.srvNome === servico;
-                return matchBusca && matchGrupo && matchTecnico && matchServico;
-            });
-
-            document.getElementById('tbl-lancamentos').innerHTML = filtrados.map(l => {
-                const gNome = db.grupos.find(g => g.id === l.grupoId)?.nome || 'Sem Grupo';
-                return `
-                    <tr class="hover:bg-slate-500/5 transition-all text-main">
-                        <td class="p-3"><span class="bg-indigo-500/10 text-indigo-500 font-bold px-2 py-0.5 rounded text-[10px]">${gNome}</span></td>
-                        <td class="p-3 font-semibold">${l.techNome}</td>
-                        <td class="p-3">${l.condominio}</td>
-                        <td class="p-3 text-xs text-muted">${l.srvNome}</td>
-                        <td class="p-3 text-right text-emerald-500 font-bold">R$ ${l.srvValor.toFixed(2)}</td>
-                        <td class="p-3 text-center space-x-2">
-                            <button onclick="abrirModalEditar(${l.id})" class="text-indigo-500 hover:text-indigo-700 text-sm"><i class="fa-regular fa-pen-to-square"></i></button>
-                            <button onclick="deletarLancamento(${l.id})" class="text-rose-500 hover:text-rose-700 text-sm"><i class="fa-regular fa-trash-can"></i></button>
-                        </td>
-                    </tr>
-                `;
-            }).join('');
-        }
-
-        function limparFiltrosHistorico() {
-            document.getElementById('filtro-busca').value = '';
-            document.getElementById('filtro-grupo').value = '';
-            document.getElementById('filtro-tecnico').value = '';
-            document.getElementById('filtro-servico').value = '';
-            filtrarHistorico();
-        }
-
-        // CÁLCULOS DA TABELA DE REPASSES FINANCEIROS
         function renderizarFinanceiroTabela() {
-            const html = db.grupos.map(g => {
+            document.getElementById('tbl-financeiro-grupos').innerHTML = db.grupos.map(g => {
                 const lFiltrados = db.lancamentos.filter(l => l.grupoId === g.id);
-                const totalDevido = lFiltrados.reduce((acc, c) => acc + c.srvValor, 0);
-
-                return `
-                    <tr class="hover:bg-slate-500/5 transition-all text-main">
-                        <td class="p-4 font-bold text-indigo-500">${g.nome}</td>
-                        <td class="p-4 text-center font-semibold text-muted">${lFiltrados.length} serv.</td>
-                        <td class="p-4 text-right font-black text-emerald-500 text-sm">R$ ${totalDevido.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</td>
-                    </tr>
-                `;
-            }).join('');
-
-            document.getElementById('tbl-financeiro-grupos').innerHTML = html || '<tr><td colspan="3" class="p-4 text-center text-muted text-xs">Nenhum grupo customizado encontrado.</td></tr>';
+                return `<tr class="hover:bg-slate-500/5 transition-all text-main"><td class="p-4 font-bold text-indigo-500">${g.nome}</td><td class="p-4 text-center font-semibold text-muted">${lFiltrados.length} serv.</td><td class="p-4 text-right font-black text-emerald-500 text-sm">R$ ${lFiltrados.reduce((acc, c) => acc + c.srvValor, 0).toLocaleString('pt-BR', {minimumFractionDigits: 2})}</td></tr>`;
+            }).join('') || '<tr><td colspan="3" class="p-4 text-center text-muted text-xs">Nenhum grupo customizado encontrado.</td></tr>';
         }
 
-        // Animação dos valores na mudança de aba ou filtros
         function calcularFinanceiroAnimado() {
             const totalGeral = db.lancamentos.reduce((acc, c) => acc + c.srvValor, 0);
             const mediaEquipe = db.grupos.length > 0 ? (totalGeral / db.grupos.length) : 0;
-
             animateValue('fin-card-total-geral', lastVal_fin_geral, totalGeral, 400, true);
             animateValue('fin-card-media-equipe', lastVal_fin_media, mediaEquipe, 400, true);
-
-            lastVal_fin_geral = totalGeral;
-            lastVal_fin_media = mediaEquipe;
+            lastVal_fin_geral = totalGeral; lastVal_fin_media = mediaEquipe;
         }
 
-        // CÁLCULOS DO DASHBOARD COM FILTROS E VALORES ANIMADOS
         function calcularDashboard(forceAnimate = false) {
-            const filtro = document.getElementById('dash-filtro-grupo').value;
-            const lancamentosFiltrados = filtro === 'Todos' ? db.lancamentos : db.lancamentos.filter(l => l.grupoId == filtro);
+            const fGrp = document.getElementById('dash-filtro-grupo').value;
+            const fMes = document.getElementById('dash-filtro-mes').value;
+
+            let lancamentosFiltrados = db.lancamentos;
+            if(fGrp !== 'Todos') lancamentosFiltrados = lancamentosFiltrados.filter(l => l.grupoId == fGrp);
+            if(fMes !== 'Todos') lancamentosFiltrados = lancamentosFiltrados.filter(l => l.mes === fMes);
 
             const faturamento = lancamentosFiltrados.reduce((acc, c) => acc + c.srvValor, 0);
-            const pagar = faturamento;
-            const totalServicos = lancamentosFiltrados.length;
+            
+            animateValue('dash-faturamento', forceAnimate ? 0 : lastVal_faturamento, faturamento, 300, true);
+            animateValue('dash-pagar', forceAnimate ? 0 : lastVal_pagar, faturamento, 300, true);
+            animateValue('dash-total-servicos', forceAnimate ? 0 : lastVal_total_servicos, lancamentosFiltrados.length, 300, false);
 
-            if(forceAnimate) {
-                animateValue('dash-faturamento', 0, faturamento, 500, true);
-                animateValue('dash-pagar', 0, pagar, 500, true);
-                animateValue('dash-total-servicos', 0, totalServicos, 500, false);
-            } else {
-                animateValue('dash-faturamento', lastVal_faturamento, faturamento, 300, true);
-                animateValue('dash-pagar', lastVal_pagar, pagar, 300, true);
-                animateValue('dash-total-servicos', lastVal_total_servicos, totalServicos, 300, false);
-            }
-
-            lastVal_faturamento = faturamento;
-            lastVal_pagar = pagar;
-            lastVal_total_servicos = totalServicos;
+            lastVal_faturamento = faturamento; lastVal_pagar = faturamento; lastVal_total_servicos = lancamentosFiltrados.length;
 
             const nomesGrupos = db.grupos.map(g => g.nome);
-            const dadosProducao = db.grupos.map(g => db.lancamentos.filter(l => l.grupoId === g.id).reduce((a,c)=>a+c.srvValor, 0));
+            const dadosProducao = db.grupos.map(g => {
+                let l = db.lancamentos.filter(lan => lan.grupoId === g.id);
+                if(fMes !== 'Todos') l = l.filter(lan => lan.mes === fMes);
+                return l.reduce((a,c)=>a+c.srvValor, 0);
+            });
 
             if (chartInstance) {
                 chartInstance.data.labels = nomesGrupos;
@@ -1109,30 +825,11 @@
                 chartInstance.update();
             } else {
                 const ctx = document.getElementById('chartDashboard').getContext('2d');
-                chartInstance = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: nomesGrupos,
-                        datasets: [
-                            {
-                                label: 'Produção Total da Equipe (R$)',
-                                data: dadosProducao,
-                                backgroundColor: '#4f46e5',
-                                borderRadius: 6
-                            }
-                        ]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: { y: { beginAtZero: true } },
-                        plugins: { legend: { position: 'top', labels: { font: { size: 11 } } } }
-                    }
-                });
+                chartInstance = new Chart(ctx, { type: 'bar', data: { labels: nomesGrupos, datasets: [{ label: 'Produção (R$)', data: dadosProducao, backgroundColor: '#4f46e5', borderRadius: 6 }] }, options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } } });
             }
         }
 
-        // Exportação PDF Customizada e Organizada
+        // Exportações PDF e Excel (AGORA COM ABAS PARA DESPESAS)
         function abrirModalPDF() { document.getElementById('modal-pdf').classList.remove('hidden'); }
         function fecharModalPDF() { document.getElementById('modal-pdf').classList.add('hidden'); }
 
@@ -1140,82 +837,53 @@
             const grupoVal = document.getElementById('pdf-filtro-grupo').value;
             const filtrados = grupoVal === 'Todas' ? db.lancamentos : db.lancamentos.filter(l => l.grupoId == grupoVal);
 
-            let txtFiltro = "Consolidado Completo de Todas as Equipes";
-            if(grupoVal !== 'Todas') {
-                const gObj = db.grupos.find(g => g.id == grupoVal);
-                if(gObj) txtFiltro = `Equipe Filtrada: ${gObj.nome}`;
-            }
-
-            document.getElementById('pdf-meta-data').innerText = new Date().toLocaleDateString('pt-BR') + ' às ' + new Date().toLocaleTimeString('pt-BR');
-            document.getElementById('pdf-meta-filtro').innerText = txtFiltro;
+            document.getElementById('pdf-meta-data').innerText = new Date().toLocaleDateString('pt-BR');
+            document.getElementById('pdf-meta-filtro').innerText = grupoVal !== 'Todas' ? `Equipe: ${db.grupos.find(g => g.id == grupoVal)?.nome}` : "Consolidado Geral";
 
             let tPagar = 0;
             const corpo = document.getElementById('pdf-table-body');
-
-            if(filtrados.length === 0) {
-                corpo.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400">Nenhum registro de atividade encontrado.</td></tr>`;
-            } else {
-                corpo.innerHTML = filtrados.map(l => {
-                    tPagar += l.srvValor;
-                    const gNome = db.grupos.find(g => g.id === l.grupoId)?.nome || 'Sem Grupo';
-                    return `
-                        <tr>
-                            <td class="py-3 px-2 font-bold text-indigo-900">${gNome}</td>
-                            <td class="py-3 px-2 font-medium">${l.techNome}</td>
-                            <td class="py-3 px-2">${l.condominio}</td>
-                            <td class="py-3 px-2 text-slate-600">${l.srvNome}</td>
-                            <td class="py-3 px-2 text-right font-bold text-emerald-600">R$ ${l.srvValor.toFixed(2)}</td>
-                        </tr>
-                    `;
-                }).join('');
-            }
-
+            corpo.innerHTML = filtrados.map(l => { tPagar += l.srvValor; const gNome = db.grupos.find(g => g.id === l.grupoId)?.nome || 'Sem Grupo'; return `<tr><td class="py-3 px-2 font-bold">${formatarMes(l.mes)}</td><td class="py-3 px-2 font-bold text-indigo-900">${gNome}</td><td class="py-3 px-2">${l.techNome}</td><td class="py-3 px-2 text-slate-600">${l.condominio}</td><td class="py-3 px-2 text-right font-bold text-emerald-600">R$ ${l.srvValor.toFixed(2)}</td></tr>`; }).join('') || `<tr><td colspan="5" class="p-4 text-center">Nenhum registro.</td></tr>`;
             document.getElementById('pdf-total-pagar').innerText = `R$ ${tPagar.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
 
             const template = document.getElementById('pdf-print-template');
             template.classList.remove('hidden');
-
-            const opt = {
-                margin: 0,
-                filename: `MDU_Relatorio_Desempenho.pdf`,
-                image: { type: 'jpeg', quality: 1.0 },
-                html2canvas: { scale: 2, useCORS: true },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            };
-
-            html2pdf().from(template).set(opt).save().then(() => {
-                template.classList.add('hidden');
-                fecharModalPDF();
-            });
+            html2pdf().from(template).set({ margin: 0, filename: `Relatorio_MDU.pdf`, image: { type: 'jpeg', quality: 1.0 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } }).save().then(() => { template.classList.add('hidden'); fecharModalPDF(); });
         }
 
-        // Exportação Planilha Excel
         function exportarExcelCompleto() {
-            if(db.lancamentos.length === 0) {
-                alert("Nenhum lançamento foi efetuado na base atual para conversão.");
-                return;
-            }
+            if(db.lancamentos.length === 0 && db.despesas.length === 0) { alert("Base vazia."); return; }
 
-            const dadosXls = db.lancamentos.map(l => {
-                const gNome = db.grupos.find(g => g.id === l.grupoId)?.nome || 'Sem Grupo';
-                return {
-                    'Grupo / Equipe': gNome,
+            const wb = XLSX.utils.book_new();
+
+            // Aba 1: Atividades / Lançamentos
+            if(db.lancamentos.length > 0) {
+                const dadosL = db.lancamentos.map(l => ({
+                    'Mês/Data': formatarMes(l.mes),
+                    'Grupo / Equipe': db.grupos.find(g => g.id === l.grupoId)?.nome || 'Sem Grupo',
                     'Técnico Líder': l.techNome,
                     'Condomínio / Prédio': l.condominio,
                     'Serviço Prestado': l.srvNome,
-                    'Valor Total do Repasse (R$)': l.srvValor
-                };
-            });
+                    'Valor do Repasse (R$)': l.srvValor
+                }));
+                XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(dadosL), "Lançamentos e Atividades");
+            }
 
-            const wb = XLSX.utils.book_new();
-            const ws = XLSX.utils.json_to_sheet(dadosXls);
-            XLSX.utils.book_append_sheet(wb, ws, "Base MDU Geral");
-            XLSX.writeFile(wb, "CONTROLES_DE_SERVICOS_MDU_V3.xlsx");
+            // Aba 2: Materiais e Despesas
+            if(db.despesas.length > 0) {
+                const dadosD = db.despesas.map(d => ({
+                    'Mês/Data': formatarMes(d.mes),
+                    'Material / Descrição': d.nome,
+                    'Quantidade': d.qtd,
+                    'Valor Unitário (R$)': d.valor,
+                    'Custo Total (R$)': d.total
+                }));
+                XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(dadosD), "Materiais e Despesas");
+            }
+
+            XLSX.writeFile(wb, "CONTROLES_DE_SERVICOS_MDU_COMPLETO.xlsx");
         }
 
-        // Inicialização do Painel
         renderizarTudo();
-        calcularDashboard(true);
     </script>
 </body>
 </html>
